@@ -2,6 +2,7 @@
 #define LINKEDLIST_H
 
 #include <cstddef>
+#include <ostream>
 
 template <typename T>
 class LinkedList
@@ -232,7 +233,23 @@ public:
 
         return false;
     }
+    // Prints every value in the list
+    void print(std::ostream& output) const
+    {
+        Node* current = head;
 
+        while (current != nullptr)
+        {
+            output << current->value;
+
+            if (current->next != nullptr)
+            {
+                output << " -> ";
+            }
+
+            current = current->next;
+        }
+    }
     // Returns an iterator at the first node
     Iterator begin()
     {

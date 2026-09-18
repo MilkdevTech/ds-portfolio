@@ -74,6 +74,75 @@ public:
 
         ++itemCount;
     }
+    // Removes the first node
+    bool popFront()
+    {
+        if (head == nullptr)
+        {
+            return false;
+        }
+
+        Node* nodeToDelete = head;
+        head = head->next;
+        delete nodeToDelete;
+        --itemCount;
+
+        return true;
+    }
+
+    // Removes the first matching value
+    bool remove(const T& value)
+    {
+        if (head == nullptr)
+        {
+            return false;
+        }
+
+        // Uses popFront if the head contains the value
+        if (head->value == value)
+        {
+            return popFront();
+        }
+
+        Node* current = head;
+
+        // Finds the node before the matching node
+        while (current->next != nullptr &&
+               !(current->next->value == value))
+        {
+            current = current->next;
+        }
+
+        if (current->next == nullptr)
+        {
+            return false;
+        }
+
+        Node* nodeToDelete = current->next;
+        current->next = nodeToDelete->next;
+        delete nodeToDelete;
+        --itemCount;
+
+        return true;
+    }
+
+    // Returns true if the list contains the value
+    bool contains(const T& value) const
+    {
+        Node* current = head;
+
+        while (current != nullptr)
+        {
+            if (current->value == value)
+            {
+                return true;
+            }
+
+            current = current->next;
+        }
+
+        return false;
+    }
 };
 
 #endif

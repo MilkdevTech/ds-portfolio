@@ -13,7 +13,7 @@ private:
         T value;
         Node* next;
 
-        // Creates a node containing newValue
+        // Creates a new node
         Node(const T& newValue, Node* nextNode = nullptr)
             : value(newValue), next(nextNode)
         {
@@ -23,6 +23,31 @@ private:
     Node* head;             // Points to the first node
     std::size_t itemCount;  // Tracks the number of nodes
 
+    // Deletes every node in the list
+    void clear()
+    {
+        while (head != nullptr)
+        {
+            Node* nodeToDelete = head;
+            head = head->next;
+            delete nodeToDelete;
+        }
+
+        itemCount = 0;
+    }
+
+    // Copies every value from another list
+    void copyFrom(const LinkedList<T>& other)
+    {
+        Node* current = other.head;
+
+        while (current != nullptr)
+        {
+            pushBack(current->value);
+            current = current->next;
+        }
+    }
+
 public:
     // Creates an empty list
     LinkedList()
@@ -30,26 +55,52 @@ public:
     {
     }
 
-    // Returns the number of items in the list
+    // Deletes all nodes when the list is destroyed
+    ~LinkedList()
+    {
+        clear();
+    }
+
+    // Creates a deep copy of another list
+    LinkedList(const LinkedList<T>& other)
+        : head(nullptr), itemCount(0)
+    {
+        copyFrom(other);
+    }
+
+    // Replaces this list with a deep copy
+    LinkedList<T>& operator=(const LinkedList<T>& other)
+    {
+        // Protects against self-assignment
+        if (this != &other)
+        {
+            clear();
+            copyFrom(other);
+        }
+
+        return *this;
+    }
+
+    // Returns the number of items
     std::size_t size() const
     {
         return itemCount;
     }
 
-      // Returns true when the list has no items
+    // Returns true when the list is empty
     bool isEmpty() const
     {
         return itemCount == 0;
     }
 
-    // Adds a value to the front of the list
+    // Adds a value to the front
     void pushFront(const T& value)
     {
         head = new Node(value, head);
         ++itemCount;
     }
 
-    // Adds a value to the back of the list
+    // Adds a value to the back
     void pushBack(const T& value)
     {
         Node* newNode = new Node(value);
@@ -63,7 +114,7 @@ public:
         {
             Node* current = head;
 
-            // Moves to the last node
+            // Moves to the final node
             while (current->next != nullptr)
             {
                 current = current->next;
@@ -74,6 +125,7 @@ public:
 
         ++itemCount;
     }
+
     // Removes the first node
     bool popFront()
     {
@@ -98,7 +150,7 @@ public:
             return false;
         }
 
-        // Uses popFront if the head contains the value
+        // Uses popFront when the head contains the value
         if (head->value == value)
         {
             return popFront();

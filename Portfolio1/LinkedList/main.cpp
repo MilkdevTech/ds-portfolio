@@ -3,27 +3,41 @@
 
 int main()
 {
-    LinkedList<int> numbers;
+    LinkedList<int> original;
 
-    // Builds the list with three values
-    numbers.pushFront(10);
-    numbers.pushFront(5);
-    numbers.pushBack(20);
+    original.pushBack(10);
+    original.pushBack(20);
+    original.pushBack(30);
 
-    std::cout << "Starting size: " << numbers.size() << '\n';
-    std::cout << "Contains 10: " << numbers.contains(10) << '\n';
-    std::cout << "Contains 99: " << numbers.contains(99) << '\n';
+    // Tests the copy constructor
+    LinkedList<int> copied(original);
+    copied.remove(20);
+    copied.pushBack(40);
 
-    // Removes a value from the middle
-    std::cout << "Remove 10: " << numbers.remove(10) << '\n';
-    std::cout << "Size after remove: " << numbers.size() << '\n';
+    std::cout << "Original size: " << original.size() << '\n';
+    std::cout << "Original contains 20: "
+              << original.contains(20) << '\n';
 
-    // Removes the first value
-    std::cout << "Pop front: " << numbers.popFront() << '\n';
-    std::cout << "Size after pop: " << numbers.size() << '\n';
+    std::cout << "Copied size: " << copied.size() << '\n';
+    std::cout << "Copied contains 20: "
+              << copied.contains(20) << '\n';
+    std::cout << "Copied contains 40: "
+              << copied.contains(40) << '\n';
 
-    // Tries to remove a value that is not present
-    std::cout << "Remove 99: " << numbers.remove(99) << '\n';
+    // Tests the copy assignment operator
+    LinkedList<int> assigned;
+    assigned.pushBack(99);
+    assigned = original;
+    assigned.popFront();
+
+    std::cout << "Original size after assignment: "
+              << original.size() << '\n';
+    std::cout << "Assigned size: " << assigned.size() << '\n';
+
+    // Tests self-assignment
+    assigned = assigned;
+    std::cout << "Assigned size after self-assignment: "
+              << assigned.size() << '\n';
 
     return 0;
 }

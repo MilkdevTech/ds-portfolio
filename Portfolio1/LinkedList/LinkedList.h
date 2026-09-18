@@ -36,10 +36,43 @@ public:
         return itemCount;
     }
 
-    // Returns true when the list has no items
+      // Returns true when the list has no items
     bool isEmpty() const
     {
         return itemCount == 0;
+    }
+
+    // Adds a value to the front of the list
+    void pushFront(const T& value)
+    {
+        head = new Node(value, head);
+        ++itemCount;
+    }
+
+    // Adds a value to the back of the list
+    void pushBack(const T& value)
+    {
+        Node* newNode = new Node(value);
+
+        // Makes the new node the head if the list is empty
+        if (head == nullptr)
+        {
+            head = newNode;
+        }
+        else
+        {
+            Node* current = head;
+
+            // Moves to the last node
+            while (current->next != nullptr)
+            {
+                current = current->next;
+            }
+
+            current->next = newNode;
+        }
+
+        ++itemCount;
     }
 };
 

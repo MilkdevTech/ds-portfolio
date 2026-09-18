@@ -49,6 +49,43 @@ private:
     }
 
 public:
+    // Moves forward through the list
+    class Iterator
+    {
+    private:
+        Node* current;
+
+    public:
+        // Starts the iterator at a node
+        Iterator(Node* node)
+            : current(node)
+        {
+        }
+
+        // Moves to the next node
+        Iterator& operator++()
+        {
+            if (current != nullptr)
+            {
+                current = current->next;
+            }
+
+            return *this;
+        }
+
+        // Returns the current value
+        T& operator*() const
+        {
+            return current->value;
+        }
+
+        // Compares two iterator positions
+        bool operator!=(const Iterator& other) const
+        {
+            return current != other.current;
+        }
+    };
+
     // Creates an empty list
     LinkedList()
         : head(nullptr), itemCount(0)
@@ -194,6 +231,18 @@ public:
         }
 
         return false;
+    }
+
+    // Returns an iterator at the first node
+    Iterator begin()
+    {
+        return Iterator(head);
+    }
+
+    // Returns an iterator past the final node
+    Iterator end()
+    {
+        return Iterator(nullptr);
     }
 };
 

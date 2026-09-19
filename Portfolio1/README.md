@@ -15,7 +15,7 @@ To compile and run on Ludwig:
 ```bash
 g++ -std=c++11 -Wall -Wextra -pedantic LinkedList/main.cpp -o linked_list
 ./linked_list
-
+```
 
 ## Part 1B
 

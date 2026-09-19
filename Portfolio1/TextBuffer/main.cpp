@@ -1,39 +1,94 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include "Stack.h"
 
+// Describes the type of document change
+enum ActionType
+{
+    TYPE_ACTION,
+    DELETE_ACTION
+};
+
+// Stores information needed to undo an action
+struct EditAction
+{
+    ActionType type;
+    std::string text;
+};
+
 int main()
 {
-    Stack<int> numbers;
+    std::string document;
+    std::string input;
 
-    // Tests push, top, size, and pop
-    numbers.push(10);
-    numbers.push(20);
-    numbers.push(30);
+    Stack<EditAction> undoStack;
+    Stack<EditAction> redoStack;
 
-    std::cout << "Top: " << numbers.top() << '\n';
-    std::cout << "Size: " << numbers.size() << '\n';
+    std::cout << "Undo/Redo Text Buffer\n";
+    std::cout << "Commands: TYPE <text>, DELETE <n>, PRINT, QUIT\n";
 
-    numbers.pop();
+    while (true)
+    {
+        std::cout << "\n> ";
+        std::getline(std::cin, input);
 
-    std::cout << "Top after pop: " << numbers.top() << '\n';
+        // Adds text to the end of the document
+        if (input.compare(0, 5, "TYPE ") == 0)
+        {
+            std::string typedText = input.substr(5);
+            document += typedText;
 
-    // Tests the copy constructor
-    Stack<int> copied = numbers;
-    copied.push(40);
+            EditAction action = {TYPE_ACTION, typedText};
+            undoStack.push(action);
 
-    std::cout << "Original top: " << numbers.top() << '\n';
-    std::cout << "Copied top: " << copied.top() << '\n';
+            // A new edit clears the redo history
+            redoStack.clear();
+        }
+        // Deletes characters from the end of the document
+        else if (input.compare(0, 7, "DELETE ") == 0)
+        {
+            std::istringstream parser(input.substr(7));
+            std::size_t amount;
 
-    // Tests the assignment operator with strings
-    Stack<std::string> words;
-    words.push("undo");
-    words.push("redo");
+            if (!(parser >> amount))
+            {
+                std::cout << "Invalid DELETE command\n";
+                continue;
+            }
 
-    Stack<std::string> assigned;
-    assigned = words;
+            // Prevents deleting past the beginning
+            if (amount > document.size())
+            {
+                amount = document.size();
+            }
 
-    std::cout << "Assigned top: " << assigned.top() << '\n';
+            std::string deletedText =
+                document.substr(document.size() - amount);
+
+            document.erase(document.size() - amount);
+
+            EditAction action = {DELETE_ACTION, deletedText};
+            undoStack.push(action);
+
+            // A new edit clears the redo history
+            redoStack.clear();
+        }
+        // Displays the current document
+        else if (input == "PRINT")
+        {
+            std::cout << "Document: " << document << '\n';
+        }
+        // Ends the program
+        else if (input == "QUIT")
+        {
+            break;
+        }
+        else
+        {
+            std::cout << "Unknown command\n";
+        }
+    }
 
     return 0;
 }

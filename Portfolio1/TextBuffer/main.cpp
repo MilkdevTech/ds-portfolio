@@ -10,7 +10,7 @@ enum ActionType
     DELETE_ACTION
 };
 
-// Stores information needed to undo an action
+// Stores information needed to reverse an action
 struct EditAction
 {
     ActionType type;
@@ -26,7 +26,8 @@ int main()
     Stack<EditAction> redoStack;
 
     std::cout << "Undo/Redo Text Buffer\n";
-    std::cout << "Commands: TYPE <text>, DELETE <n>, PRINT, QUIT\n";
+    std::cout
+        << "Commands: TYPE <text>, DELETE <n>, UNDO, PRINT, QUIT\n";
 
     while (true)
     {
@@ -45,7 +46,7 @@ int main()
             // A new edit clears the redo history
             redoStack.clear();
         }
-        // Deletes characters from the end of the document
+        // Deletes characters from the end
         else if (input.compare(0, 7, "DELETE ") == 0)
         {
             std::istringstream parser(input.substr(7));
@@ -73,6 +74,32 @@ int main()
 
             // A new edit clears the redo history
             redoStack.clear();
+        }
+        // Reverses the latest document change
+        else if (input == "UNDO")
+        {
+            if (undoStack.isEmpty())
+            {
+                std::cout << "Nothing to undo\n";
+                continue;
+            }
+
+            EditAction action = undoStack.top();
+            undoStack.pop();
+
+            if (action.type == TYPE_ACTION)
+            {
+                // Removes the text that was typed
+                document.erase(document.size() -
+                               action.text.size());
+            }
+            else
+            {
+                // Restores the text that was deleted
+                document += action.text;
+            }
+
+            redoStack.push(action);
         }
         // Displays the current document
         else if (input == "PRINT")

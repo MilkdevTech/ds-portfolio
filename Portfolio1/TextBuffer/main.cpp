@@ -27,12 +27,18 @@ int main()
 
     std::cout << "Undo/Redo Text Buffer\n";
     std::cout
-        << "Commands: TYPE <text>, DELETE <n>, UNDO, PRINT, QUIT\n";
+        << "Commands: TYPE <text>, DELETE <n>, UNDO, REDO, "
+        << "PRINT, QUIT\n";
 
     while (true)
     {
         std::cout << "\n> ";
-        std::getline(std::cin, input);
+
+        // Ends the program if input closes
+        if (!std::getline(std::cin, input))
+        {
+            break;
+        }
 
         // Adds text to the end of the document
         if (input.compare(0, 5, "TYPE ") == 0)
@@ -100,6 +106,32 @@ int main()
             }
 
             redoStack.push(action);
+        }
+        // Reapplies the latest undone change
+        else if (input == "REDO")
+        {
+            if (redoStack.isEmpty())
+            {
+                std::cout << "Nothing to redo\n";
+                continue;
+            }
+
+            EditAction action = redoStack.top();
+            redoStack.pop();
+
+            if (action.type == TYPE_ACTION)
+            {
+                // Reapplies the typed text
+                document += action.text;
+            }
+            else
+            {
+                // Deletes the restored text again
+                document.erase(document.size() -
+                               action.text.size());
+            }
+
+            undoStack.push(action);
         }
         // Displays the current document
         else if (input == "PRINT")

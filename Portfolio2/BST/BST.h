@@ -38,15 +38,38 @@ private:
         return 1 + countNodes(current->left)
                  + countNodes(current->right);
     }
+// insert using recursion 
+Node* insertNode(Node* current, const T& newValue)
+    {
+        if (current == nullptr)
+        {
+            return new Node(newValue);
+        }
+
+        if (newValue < current->value)
+        {
+            current->left = insertNode(current->left, newValue);
+        }
+        else if (current->value < newValue)
+        {
+            current->right = insertNode(current->right, newValue);
+        }
+
+        return current;
+    }
 
 public:
-    // empty tree
+// empty tree
     BST()
         : root(nullptr)
     {
 
     }
-
+// Adds a value to tree
+    void insert(const T& newValue)
+    {
+        root = insertNode(root, newValue);
+    }
     // total nodes in tree
     std::size_t size() const
     {

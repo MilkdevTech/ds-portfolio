@@ -6,7 +6,7 @@ int main()
     // Tests my tree
     BST<int> numbers;
 
-    std::cout << "Created an empty tree." << '\n';
+    std::cout << "Empty tree size: " << numbers.size() << '\n';
 
     return 0;
 }

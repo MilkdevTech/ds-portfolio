@@ -38,8 +38,9 @@ private:
         return 1 + countNodes(current->left)
                  + countNodes(current->right);
     }
-// insert using recursion 
-Node* insertNode(Node* current, const T& newValue)
+
+    // insert using recursion
+    Node* insertNode(Node* current, const T& newValue)
     {
         if (current == nullptr)
         {
@@ -83,6 +84,70 @@ Node* insertNode(Node* current, const T& newValue)
         return searchNode(current->right, target);
     }
 
+    // to find the smallest node
+    Node* findMin(Node* current) const
+    {
+        while (current->left != nullptr)
+        {
+            current = current->left;
+        }
+
+        return current;
+    }
+
+    // remove using recursion
+    Node* removeNode(Node* current, const T& target)
+    {
+        if (current == nullptr)
+        {
+            return nullptr;
+        }
+
+        if (target < current->value)
+        {
+            current->left = removeNode(current->left, target);
+        }
+        else if (current->value < target)
+        {
+            current->right = removeNode(current->right, target);
+        }
+        else
+        {
+            // No children means return nullptr
+            if (current->left == nullptr &&
+                current->right == nullptr)
+            {
+                delete current;
+                return nullptr;
+            }
+
+            // return right child
+            if (current->left == nullptr)
+            {
+                Node* child = current->right;
+                delete current;
+                return child;
+            }
+
+            // return left child
+            if (current->right == nullptr)
+            {
+                Node* child = current->left;
+                delete current;
+                return child;
+            }
+
+            // Both children
+            Node* successor = findMin(current->right);
+            current->value = successor->value;
+
+            current->right = removeNode(current->right,
+                                        successor->value);
+        }
+
+        return current;
+    }
+
 public:
     // empty tree
     BST()
@@ -90,16 +155,23 @@ public:
     {
 
     }
+
     // Adds a value to tree
     void insert(const T& newValue)
     {
         root = insertNode(root, newValue);
     }
-  
+
     // Checks whether a value exists
     bool search(const T& target) const
     {
         return searchNode(root, target);
+    }
+
+    //removal in BST
+    void remove(const T& target)
+    {
+        root = removeNode(root, target);
     }
 
     // total nodes in tree

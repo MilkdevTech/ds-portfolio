@@ -58,18 +58,50 @@ Node* insertNode(Node* current, const T& newValue)
         return current;
     }
 
+    // Searches for value in the tree
+    bool searchNode(Node* current, const T& target) const
+    {
+        // Value not found
+        if (current == nullptr)
+        {
+            return false;
+        }
+
+        // value found
+        if (target == current->value)
+        {
+            return true;
+        }
+
+        // left side
+        if (target < current->value)
+        {
+            return searchNode(current->left, target);
+        }
+
+        // switch ro right side
+        return searchNode(current->right, target);
+    }
+
 public:
-// empty tree
+    // empty tree
     BST()
         : root(nullptr)
     {
 
     }
-// Adds a value to tree
+    // Adds a value to tree
     void insert(const T& newValue)
     {
         root = insertNode(root, newValue);
     }
+  
+    // Checks whether a value exists
+    bool search(const T& target) const
+    {
+        return searchNode(root, target);
+    }
+
     // total nodes in tree
     std::size_t size() const
     {

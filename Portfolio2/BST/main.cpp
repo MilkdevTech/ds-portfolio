@@ -1,30 +1,44 @@
+
 #include <iostream>
 #include "BST.h"
 
+using namespace std;
+
 int main()
 {
-    // Tests my tree
+    // Create an empty BST
     BST<int> numbers;
 
-    std::cout << "Empty tree size: " << numbers.size() << '\n';
+    cout << "Empty tree size: "
+         << numbers.size() << '\n';
 
-    
-    // insert numbers
+    // Add to the tree
     numbers.insert(50);
     numbers.insert(30);
     numbers.insert(70);
     numbers.insert(20);
     numbers.insert(40);
 
-    // Check size after adding numbers
-    std::cout << "after inserts: "
-              << numbers.size() << '\n';
+    cout << "Size after inserts: "
+         << numbers.size() << '\n';
 
-    // add a a test duplicate
+    // add a duplicate
     numbers.insert(30);
 
-    std::cout << "after duplicate: "
-              << numbers.size() << '\n';
+    cout << "Size after duplicate: "
+         << numbers.size() << '\n';
+
+    // Test searching
+    cout << boolalpha;
+
+    cout << "Searching for 40 - "
+         << numbers.search(40) << '\n';
+
+    cout << "Searching for 70 - "
+         << numbers.search(70) << '\n';
+
+    cout << "Searching for 99 - "
+         << numbers.search(99) << '\n';
 
     return 0;
 }

@@ -48,7 +48,16 @@ int main()
 
     cout << "Preorder -";
     numbers.preorder();
-    
+
+    cout << "postorder - ";
+    numbers.postorder();
+
+    cout << "Levels - ";
+    numbers.levels();
+
+    cout << "Height - " <<
+    numbers.height() << "\n";
+
     cout << "Size before removal - "
          << numbers.size() << '\n';
 
@@ -81,5 +90,13 @@ int main()
     cout << "Size after removing 99 - "
          << numbers.size() << '\n';
 
+    //numbers left
+    cout << "Inorder after removal - ";
+    numbers.inorder();
+
+    //height after removal
+    cout << "Height after removal - "
+         << numbers.height() << "\n";
+  
     return 0;
 }

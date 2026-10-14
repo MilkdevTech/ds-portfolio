@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <queue>
 
 template <typename T>
 class BST
@@ -20,7 +21,7 @@ private:
         Node(const T& newValue)
             : value(newValue), left(nullptr), right(nullptr)
         {
-
+	  
         }
     };
 
@@ -174,7 +175,43 @@ private:
     preorderNode(current->left);
     preorderNode(current->right);
   }
-    
+  //left right node
+  void postorderNode(Node* current) const
+  {
+    if(current == nullptr)
+      {
+	return;
+      }
+
+    //left right
+    postorderNode(current->left);
+    postorderNode(current->right);
+
+    //parent print
+    std::cout << current->value << " ";
+  }
+
+    // counts the trees levels
+    int heightNode(Node* current) const
+    {
+
+      if (current == nullptr)
+	{
+	  return 0;
+	}
+
+      //height of both sides
+      int leftHeight = heightNode(current->left);
+      int rightHeight = heightNode(current->right);
+
+      if (leftHeight > rightHeight)
+	{
+	  return leftHeight + 1;
+	}
+
+      return rightHeight + 1;
+				  
+    }
 public:
     // empty tree
     BST()
@@ -226,6 +263,59 @@ public:
         std::cout << "\n";
     }
 
+    //POSTORDER
+    void postorder() const
+    {
+      postorderNode(root);
+      std::cout << "\n";
+    }
+
+    //Level by Level
+
+    void levels() const
+    {
+      //from <queue> header
+      std::queue<Node*> nodes;
+      //using it to have easy pop push etc
+      if (root != nullptr)
+	{
+	  //adds root to back of line
+	  nodes.push(root);
+	}
+
+      //empty also from <queue>
+      //returns true when nothing is left
+      while (!nodes.empty())
+	{
+	  //front gets first item in queue
+	  Node* current = nodes.front();
+
+	  //pop removing the front
+	  nodes.pop();
+
+	  std::cout << current->value << " ";
+
+	  //if left child add to back
+	  if (current->left != nullptr)
+	    {
+	      nodes.push(current->left);
+	    }
+
+	  //if right child add after left
+	  if (current->right != nullptr)
+	    {
+	      nodes.push(current->right);
+	    }
+
+	}
+
+      std::cout << "\n";
+    }
+      //get tree height
+      int height() const
+    {
+      return heightNode(root);
+    }
 };
 
 #endif

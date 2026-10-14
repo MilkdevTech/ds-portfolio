@@ -2,6 +2,7 @@
 #define BST_H
 
 #include <cstddef>
+#include <iostream>
 
 template <typename T>
 class BST
@@ -147,7 +148,33 @@ private:
 
         return current;
     }
+  // left then(node) right now yall :)
+  void inorderNode(Node* current) const
+  {
+    //all about that BASE
+    if (current == nullptr)
+      {
+	return;
+      }
 
+    inorderNode(current->left);
+    std::cout << current->value << " ";
+    inorderNode(current->right);
+  }
+
+  // node left right :|
+  void preorderNode(Node* current) const
+  {
+    if (current == nullptr)
+      {
+	return;
+      }
+
+    std::cout << current->value << " ";
+    preorderNode(current->left);
+    preorderNode(current->right);
+  }
+    
 public:
     // empty tree
     BST()
@@ -179,6 +206,26 @@ public:
     {
         return countNodes(root);
     }
+
+    //ORDERING _____
+
+  
+    //INORDER
+
+    void inorder() const
+    {
+        inorderNode(root);
+        std::cout << "\n";
+    }
+  
+    //PREORDER
+
+    void preorder() const
+    {
+        preorderNode(root);
+        std::cout << "\n";
+    }
+
 };
 
 #endif

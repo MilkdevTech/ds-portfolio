@@ -42,6 +42,13 @@ int main()
     numbers.insert(60);
     numbers.insert(80);
 
+    //Ordering
+    cout << "Inorder - ";
+    numbers.inorder();
+
+    cout << "Preorder -";
+    numbers.preorder();
+    
     cout << "Size before removal - "
          << numbers.size() << '\n';
 

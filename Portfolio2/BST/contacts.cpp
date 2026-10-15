@@ -51,10 +51,16 @@ int main()
   BST<Contact> contacts;
   string command;
 
-  cout << "Contact Directory\n";
-  cout << "commands - ADD first , last , phone , LIST\n";
-  cout << "Press CTRL + D to exit\n";
-
+  cout << "\n=================================\n";
+  cout << "        CONTACT DIRECTORY\n";
+  cout << "=================================\n";
+  cout << "Available Commands:\n\n";
+  cout << " ADD first last phone - Add contact\n";
+  cout << " LOOKUP last           - Find contact\n";
+  cout << " LIST                  - Show contacts\n";
+  cout << "\nExample: ADD Greyson Mullins 123-4567\n";
+  cout << "Press Ctrl+D to exit.\n";
+  cout << "---------------------------------\n";
   //command interface
 
   while (cin >> command)
@@ -98,14 +104,37 @@ int main()
 		contacts.forEachInorder(printContact);
 	      }
 	  }
-	else
+	else if (command == "LOOKUP")
 	  {
-	    cout << "invalid\n";
+	    string last;
+	    cin >> last;
+
+	    bool found = false;
+
+	    contacts.forEachInorder([&](const Contact& person)
+	    {
+	      if (person.lastName == last)
+		{
+		  printContact(person);
+		  found = true;    
+		}
+	    });
+	      if (!found)
+		{
+		  cout << "Not found\n";
+		}
+	     
+
+	      }
+	    else
+	      {
+		cout << "Unkown Command\n";
+	      }
+
 	  }
-    }
-	return 0;
-	 
 
 
+
+      return 0;	 
   
 }

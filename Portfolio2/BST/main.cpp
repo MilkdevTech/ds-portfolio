@@ -97,6 +97,35 @@ int main()
     //height after removal
     cout << "Height after removal - "
          << numbers.height() << "\n";
-  
+
+    //copy the tree
+    BST<int> copied(numbers);
+
+    cout << "Copy size - "
+         << copied.size() << "\n";
+
+    //change original
+    numbers.insert(99);
+
+    //check copy
+    cout << "Copy independent - "
+         << !copied.search(99) << "\n";
+
+    //assignment
+    BST<int> assigned;
+    assigned = numbers;
+
+    //change original
+    numbers.remove(99);
+
+    cout << "Assignment independent - "
+         << assigned.search(99) << "\n";
+
+    //self assignment
+    assigned = assigned;
+
+    cout << "Self assignment size - "
+         << assigned.size() << "\n";
+    
     return 0;
 }

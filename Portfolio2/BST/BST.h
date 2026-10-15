@@ -27,6 +27,36 @@ private:
 
     Node* root;  // Points at top node
 
+  //delete the tree with
+  void clearNode(Node* current)
+  {
+    if (current == nullptr)
+      {
+	return;
+      }
+
+    //dekete side left and right
+    clearNode(current->left);
+    clearNode(current->right);
+
+    delete current;
+  }
+  
+  Node* copyNode(const Node* current)
+  {
+    if (current == nullptr)
+      {
+	return nullptr;
+      }
+
+    //makes new copy node
+    Node* copy = new Node(current->value);
+
+    copy->left = copyNode(current->left);
+    copy->right = copyNode(current->right);
+
+    return copy;
+  }
     // counts nodes
     std::size_t countNodes(Node* current) const
     {
@@ -217,9 +247,34 @@ public:
     BST()
         : root(nullptr)
     {
-
+      
     }
 
+    //copy constructor
+    BST(const BST& other)
+      : root(nullptr)
+    {
+      root = copyNode(other.root);
+    }
+
+    //assignment operator
+    BST& operator=(const BST& other)
+    {
+      if (this != &other)
+	{
+	  //make copy del old tree use new one
+	  Node* copy = copyNode(other.root);
+	  clearNode(root);
+	  root = copy;
+	}
+      return *this;
+    }
+    //destructor
+    ~BST()
+    {
+      clearNode(root);
+    }
+	
     // Adds a value to tree
     void insert(const T& newValue)
     {

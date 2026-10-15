@@ -26,7 +26,20 @@ private:
     };
 
     Node* root;  // Points at top node
+  //template we can visit each node by order
+  template <typename Action>
+  void visitNode(const Node* current, Action& action) const
+  {
+    if (current == nullptr)
+      {
+	return;
+      }
 
+    //left node then right
+    visitNode(current->left, action);
+    action(current->value);
+    visitNode(current->right, action);
+  }
   //delete the tree with
   void clearNode(Node* current)
   {
@@ -299,6 +312,14 @@ public:
         return countNodes(root);
     }
 
+    // visits all values in order
+    template <typename Action>
+
+    void forEachInorder(Action action) const
+  {
+    visitNode(root, action);
+  }
+    
     //ORDERING _____
 
   

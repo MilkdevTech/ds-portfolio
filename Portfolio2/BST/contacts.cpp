@@ -58,6 +58,8 @@ int main()
   cout << " ADD first last phone - Add contact\n";
   cout << " LOOKUP last           - Find contact\n";
   cout << " LIST                  - Show contacts\n";
+  cout << " DELETE last           - Remove contacts\n";
+  cout << " COUNT                 - Show count and height\n";
   cout << "\nExample: ADD Greyson Mullins 123-4567\n";
   cout << "Press Ctrl+D to exit.\n";
   cout << "---------------------------------\n";
@@ -126,6 +128,52 @@ int main()
 	     
 
 	      }
+	else if (command == "DELETE")
+	  {
+	    string last;
+	    cin >> last;
+
+	    int removed = 0;
+
+	    while (true)
+	      {
+		bool found = false;
+		Contact match("", "", "");
+
+		contacts.forEachInorder([&](const Contact& person)
+		{
+		  if(!found && person.lastName == last)
+		    {
+		      match = person;
+		      found = true;
+		    }
+		});
+
+		if (!found)
+		  {
+		    break;
+		  }
+
+		contacts.remove(match);
+		removed++;
+	      }
+	    if (removed == 0)
+	      {
+		cout << "Not found\n";
+	      }
+	    
+	     else
+            {
+                cout << "Deleted " << removed << " contacts\n";
+            }
+        }
+
+        else if (command == "COUNT")
+        {
+            cout << "Total contacts: " << contacts.size() << "\n";
+            cout << "Tree height: " << contacts.height() << "\n";
+        }
+  
 	    else
 	      {
 		cout << "Unkown Command\n";
